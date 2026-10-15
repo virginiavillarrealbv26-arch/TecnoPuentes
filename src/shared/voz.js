@@ -11,7 +11,9 @@ const elegirVoz = () => {
 export const hablar = (texto, { velocidad = 0.9, tono = 1.1, interrumpir = true } = {}) => {
   if (!('speechSynthesis' in window)) return;
   if (interrumpir) window.speechSynthesis.cancel();
-  const locucion = new SpeechSynthesisUtterance(texto);
+  // Normalizar texto: quitar signos de apertura, colapsar espacios
+  const limpio = ('' + texto).replace(/[¡¿]/g, '').replace(/\s+/g, ' ').trim();
+  const locucion = new SpeechSynthesisUtterance(limpio);
   locucion.lang = 'es-AR';
   locucion.rate = velocidad;
   locucion.pitch = tono;

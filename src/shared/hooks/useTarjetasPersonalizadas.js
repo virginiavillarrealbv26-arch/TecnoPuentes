@@ -39,6 +39,7 @@ export const useTarjetasPersonalizadas = (clave) => {
           id: generarId(),
           icono,
           texto,
+          voz: texto,
           personalizada: true,
         },
       ],
