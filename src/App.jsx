@@ -24,7 +24,8 @@ function App() {
 
   return (
     <div className="w-full min-h-screen bg-gray-50 font-sans">
-      <AnimatePresence mode="wait">
+      <div className="mx-auto w-full max-w-xl md:max-w-6xl px-4">
+        <AnimatePresence mode="wait">
         {!usuario && (
           <motion.div key="onboarding" exit={{ opacity: 0 }}>
             <Onboarding onComplete={registrar} />
@@ -40,7 +41,8 @@ function App() {
             <Modulo usuario={usuario} onVolver={volverAlMenu} progreso={progreso} />
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

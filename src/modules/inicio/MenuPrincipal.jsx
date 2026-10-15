@@ -60,7 +60,7 @@ const MenuPrincipal = ({ usuario, estrellas = 0, onElegir, onSalir }) => {
 			exit={{ opacity: 0, scale: 0.95 }}
 			className="min-h-screen overflow-hidden bg-[linear-gradient(135deg,#f8fbff_0%,#eef8f5_48%,#fff8e7_100%)] p-4 text-slate-800 md:p-6"
 		>
-			<div className="mx-auto flex w-full max-w-xl md:max-w-6xl flex-col gap-6 px-2">
+			<div className="mx-auto flex w-full max-w-xl md:max-w-6xl flex-col gap-6 px-4">
 				<header className="flex items-center justify-between gap-3">
 					{confirmando ? (
 						<div className="flex items-center gap-2">
