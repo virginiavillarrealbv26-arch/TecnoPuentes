@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="min-h-screen w-full bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.14),_transparent_38%),linear-gradient(180deg,#f8fafc_0%,#f3f6fb_100%)] px-2 py-3 font-sans text-slate-800 sm:px-4 lg:px-6">
-      <div className="mx-auto w-full max-w-[430px] sm:max-w-5xl">
+      <div className="mx-auto w-full max-w-[420px] sm:max-w-[980px] lg:max-w-[1100px]">
         <AnimatePresence mode="wait">
         {!usuario && (
           <motion.div key="onboarding" exit={{ opacity: 0 }} className="w-full">
