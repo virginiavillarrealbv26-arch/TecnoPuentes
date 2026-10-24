@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import Avatar from '@/shared/components/Avatar';
+import InstitucionesFooter from '@/shared/components/InstitucionesFooter';
 import { hablar } from '@/shared/voz';
 import { useTimeouts } from '@/shared/hooks/useTimeouts';
 
@@ -58,23 +59,23 @@ const MenuPrincipal = ({ usuario, estrellas = 0, onElegir, onSalir }) => {
 			initial={{ opacity: 0, scale: 0.95 }}
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 0.95 }}
-			className="min-h-screen overflow-hidden bg-[linear-gradient(135deg,#f8fbff_0%,#eef8f5_48%,#fff8e7_100%)] p-4 text-slate-800 md:p-6"
+			className="min-h-screen w-full overflow-hidden bg-[linear-gradient(135deg,#f8fbff_0%,#eef8f5_48%,#fff8e7_100%)] px-1 py-3 text-slate-800 sm:px-3 md:p-6"
 		>
-			<div className="mx-auto flex w-full max-w-xl md:max-w-6xl flex-col gap-6 px-4">
-				<header className="flex items-center justify-between gap-3">
+			<div className="mx-auto flex w-full max-w-[390px] flex-col gap-4 sm:max-w-5xl sm:gap-6">
+				<header className="flex w-full items-center justify-between gap-3">
 					{confirmando ? (
 						<div className="flex items-center gap-2">
 							<motion.button
 								whileTap={{ scale: 0.96 }}
 								onClick={onSalir}
-								className="min-h-14 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-base font-extrabold text-emerald-700 shadow-sm transition hover:bg-emerald-100 md:px-5"
+								className="min-h-12 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-extrabold text-emerald-700 shadow-sm transition hover:bg-emerald-100 md:min-h-14 md:px-5 md:text-base"
 							>
 								Sí
 							</motion.button>
 							<motion.button
 								whileTap={{ scale: 0.96 }}
 								onClick={() => setConfirmando(false)}
-								className="min-h-14 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-extrabold text-slate-600 shadow-sm transition hover:bg-slate-50 md:px-5"
+								className="min-h-12 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-extrabold text-slate-600 shadow-sm transition hover:bg-slate-50 md:min-h-14 md:px-5 md:text-base"
 							>
 								No
 							</motion.button>
@@ -83,36 +84,36 @@ const MenuPrincipal = ({ usuario, estrellas = 0, onElegir, onSalir }) => {
 						<motion.button
 							whileTap={{ scale: 0.95 }}
 							onClick={manejarSalir}
-							className="min-h-14 rounded-2xl border border-white/80 bg-white/90 px-4 py-3 text-base font-extrabold text-slate-500 shadow-sm transition hover:text-slate-700 md:px-6"
+							className="min-h-12 rounded-2xl border border-white/80 bg-white/90 px-4 py-3 text-sm font-extrabold text-slate-500 shadow-sm transition hover:text-slate-700 md:min-h-14 md:px-6 md:text-base"
 						>
 							Salir
 						</motion.button>
 					)}
 
-					<div className="flex min-h-14 items-center gap-3 rounded-2xl border border-white/80 bg-white/95 px-4 py-2 shadow-sm md:px-5">
-						<Avatar id={usuario.avatar} className="text-3xl" />
+					<div className="flex min-h-12 items-center gap-3 rounded-2xl border border-white/80 bg-white/95 px-3 py-2 shadow-sm md:min-h-14 md:px-5">
+						<Avatar id={usuario.avatar} className="text-2xl md:text-3xl" />
 						<div className="leading-tight">
-							<p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Hola</p>
-							<span className="block max-w-[9rem] truncate text-lg font-black text-slate-700 md:max-w-xs md:text-xl">
+							<p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 md:text-xs">Hola</p>
+							<span className="block max-w-[9rem] truncate text-base font-black text-slate-700 md:max-w-xs md:text-xl">
 								{usuario.nombre}
 							</span>
 						</div>
 					</div>
 				</header>
 
-				<section className="grid items-center gap-5 md:grid-cols-[1.4fr_0.6fr]">
-					<div className="rounded-[2rem] border border-white/80 bg-white/80 p-6 shadow-sm backdrop-blur md:p-8">
-						<p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-teal-600">Inicio</p>
-						<h1 className="max-w-3xl text-4xl font-black leading-tight text-slate-800 md:text-6xl">
+				<section className="grid w-full items-center gap-4 md:grid-cols-[1.4fr_0.6fr]">
+					<div className="w-full rounded-[2rem] border border-white/80 bg-white/80 p-4 shadow-sm backdrop-blur md:p-8">
+						<p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-teal-600 md:text-sm">Inicio</p>
+						<h1 className="max-w-3xl text-3xl font-black leading-tight text-slate-800 md:text-6xl">
 							¿Qué hacemos hoy?
 						</h1>
-						<p className="mt-4 max-w-2xl text-lg font-bold leading-relaxed text-slate-500">
+						<p className="mt-3 max-w-2xl text-sm font-bold leading-relaxed text-slate-500 md:mt-4 md:text-lg">
 							Elegí una actividad para comunicar, jugar o aprender a tu ritmo.
 						</p>
 					</div>
 
-					<div className="rounded-[2rem] border border-amber-100 bg-gradient-to-br from-amber-50 via-white to-yellow-50 p-5 shadow-[0_12px_30px_rgba(251,191,36,0.12)]">
-						<div className="mb-3 flex items-center justify-center gap-2 text-3xl md:text-4xl" aria-label={`${estrellas} estrellas ganadas`}>
+					<div className="w-full rounded-[2rem] border border-amber-100 bg-gradient-to-br from-amber-50 via-white to-yellow-50 p-4 shadow-[0_12px_30px_rgba(251,191,36,0.12)] md:p-5">
+						<div className="mb-3 flex items-center justify-center gap-2 text-2xl md:text-4xl" aria-label={`${estrellas} estrellas ganadas`}>
 							{estrellasVisibles.map((llena, index) => (
 								<span
 									key={`estrella-${index}`}
@@ -123,7 +124,7 @@ const MenuPrincipal = ({ usuario, estrellas = 0, onElegir, onSalir }) => {
 								</span>
 							))}
 						</div>
-						<p className="text-center text-sm font-black uppercase tracking-[0.18em] text-amber-600">Estrellas</p>
+						<p className="text-center text-[10px] font-black uppercase tracking-[0.18em] text-amber-600 md:text-sm">Estrellas</p>
 					</div>
 				</section>
 
@@ -135,9 +136,9 @@ const MenuPrincipal = ({ usuario, estrellas = 0, onElegir, onSalir }) => {
 							whileTap={{ scale: 0.96 }}
 							onClick={() => { hablar(p.titulo); onElegir(p.id); }}
 							aria-label={`${p.titulo}: ${p.desc}`}
-							className={`group flex min-h-[10.5rem] items-center gap-5 rounded-[2rem] border-4 ${p.borde} bg-gradient-to-br ${p.fondo} p-5 text-left shadow-sm transition-all hover:shadow-xl md:min-h-[22rem] md:flex-col md:items-start md:justify-between md:p-7`}
+							className={`group flex w-full min-h-[10.5rem] items-center gap-5 rounded-[2rem] border-4 ${p.borde} bg-gradient-to-br ${p.fondo} p-5 text-left shadow-sm transition-all hover:shadow-xl md:min-h-[22rem] md:flex-col md:items-start md:justify-between md:p-7`}
 						>
-							<span className="flex h-24 w-24 shrink-0 items-center justify-center rounded-[1.75rem] bg-white text-6xl shadow-sm md:h-32 md:w-32 md:text-7xl">{p.icono}</span>
+							<span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[1.75rem] bg-white text-5xl shadow-sm md:h-32 md:w-32 md:text-7xl">{p.icono}</span>
 							<div className="min-w-0">
 								<span className={`mb-4 hidden w-fit rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.15em] md:block ${p.detalle}`}>{p.accion}</span>
 								<h2 className={`text-2xl font-black uppercase tracking-wide md:text-3xl ${p.texto}`}>{p.titulo}</h2>
@@ -147,6 +148,8 @@ const MenuPrincipal = ({ usuario, estrellas = 0, onElegir, onSalir }) => {
 						</motion.button>
 					))}
 				</div>
+
+				<InstitucionesFooter className="mt-auto" />
 			</div>
 		</motion.div>
 	);
