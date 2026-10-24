@@ -62,8 +62,8 @@ const Onboarding = ({ onComplete }) => {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-start overflow-hidden bg-[linear-gradient(135deg,#f7fbff_0%,#eef8f2_52%,#fff6dc_100%)] px-1 pb-0 pt-1 text-slate-800 sm:justify-center sm:px-3 sm:pt-3">
-      <div className="relative z-10 flex w-full max-w-[390px] flex-col items-center justify-start gap-1 sm:max-w-[920px]">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[linear-gradient(135deg,#f7fbff_0%,#eef8f2_52%,#fff6dc_100%)] px-1 pb-0 pt-1 text-slate-800 sm:justify-center sm:px-3 sm:pt-3">
+      <div className="relative z-10 flex w-full max-w-[350px] flex-col items-center justify-center gap-1 sm:max-w-[920px]">
         {paso > 0 && (
           <div className="w-full px-1">
             <motion.button
@@ -74,7 +74,7 @@ const Onboarding = ({ onComplete }) => {
           </div>
         )}
 
-        <motion.div layout className="w-full overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/90 shadow-[0_20px_60px_rgba(15,23,42,0.12)] backdrop-blur sm:max-w-[920px] sm:rounded-[2rem]">
+        <motion.div layout className="w-full overflow-hidden rounded-[1.4rem] border border-white/80 bg-white/90 shadow-[0_18px_42px_rgba(15,23,42,0.11)] backdrop-blur sm:max-w-[920px] sm:rounded-[2rem]">
           <div className="grid md:grid-cols-[0.85fr_1.15fr]">
             <aside className="hidden bg-[radial-gradient(circle_at_top_left,_rgba(125,211,252,0.35),_transparent_40%),linear-gradient(135deg,#0f172a_0%,#1e293b_60%,#0f172a_100%)] p-8 text-white md:flex md:flex-col md:justify-between">
               <div>
@@ -105,10 +105,10 @@ const Onboarding = ({ onComplete }) => {
                 )}
 
                 {paso === 1 && (
-                  <motion.div key="p1" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="mx-auto flex min-h-[12.5rem] w-full max-w-[340px] flex-col items-center justify-center text-center md:min-h-[28rem]">
-                    <h2 className="mb-1 text-[1.9rem] font-black leading-none text-slate-800 md:text-4xl">¿Cómo te llamas?</h2>
-                    <p className="mb-4 max-w-sm text-xs font-bold leading-relaxed text-slate-500 md:text-base">Podés escribirlo o decirlo con el micrófono.</p>
-                    <div className="mb-3 flex w-full items-center gap-2 rounded-[1.25rem] border border-sky-100 bg-sky-50/60 p-1.5 shadow-inner shadow-sky-100">
+                  <motion.div key="p1" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="mx-auto flex min-h-[11.8rem] w-full max-w-[330px] flex-col items-center justify-center text-center md:min-h-[28rem]">
+                    <h2 className="mb-1 text-[1.8rem] font-black leading-none text-slate-800 md:text-4xl">¿Cómo te llamas?</h2>
+                    <p className="mb-3 max-w-sm text-[0.72rem] font-bold leading-relaxed text-slate-500 md:text-base">Podés escribirlo o decirlo con el micrófono.</p>
+                    <div className="mb-3 flex w-full items-center gap-2 rounded-[1.2rem] border border-sky-100 bg-sky-50/60 p-1.5 shadow-inner shadow-sky-100">
                       <input
                         type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Escribe tu nombre..."
                         className="min-h-11 min-w-0 flex-1 rounded-xl border-0 bg-transparent px-3 py-2 text-left text-base font-black text-slate-700 outline-none placeholder:text-slate-400 md:text-2xl"
@@ -118,9 +118,9 @@ const Onboarding = ({ onComplete }) => {
                         className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-lg text-white shadow-md md:h-16 md:w-16 md:text-3xl ${escuchando ? 'animate-pulse bg-red-500' : 'bg-gradient-to-r from-emerald-500 to-emerald-400'}`}
                       >🎙️</motion.button>
                     </div>
-                    {aviso && <p className="mb-3 w-full rounded-xl bg-orange-50 px-3 py-2 text-xs font-bold text-orange-700">{aviso}</p>}
+                    {aviso && <p className="mb-2 w-full rounded-lg bg-orange-50 px-3 py-2 text-[0.72rem] font-bold text-orange-700">{aviso}</p>}
                     <motion.button whileTap={{ scale: 0.95 }} onClick={irPasoDos} disabled={!nombre.trim()}
-                      className="min-h-11 w-full rounded-xl bg-gradient-to-r from-sky-500 to-blue-500 px-4 py-2.5 text-base font-black text-white shadow-md transition hover:brightness-105 disabled:opacity-50 md:text-2xl">
+                      className="min-h-11 w-full rounded-xl bg-gradient-to-r from-sky-500 to-blue-500 px-4 py-2.5 text-base font-black text-white shadow-[0_10px_22px_rgba(59,130,246,0.28)] transition hover:brightness-105 disabled:opacity-50 md:text-2xl">
                       Siguiente
                     </motion.button>
                   </motion.div>
