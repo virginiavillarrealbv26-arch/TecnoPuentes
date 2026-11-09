@@ -14,13 +14,25 @@ const Comunicador = ({ usuario, onVolver }) => {
   const [categoriaActiva, setCategoriaActiva] = useState('basicos');
   const [frase, setFrase] = useState([]);
   const [creando, setCreando] = useState(false);
-  const [nuevaTarjeta, setNuevaTarjeta] = useState({ icono: '', texto: '' });
+  const [nuevaTarjeta, setNuevaTarjeta] = useState({ icono: '', texto: '', imagen: '' });
   const {
     tarjetasPersonalizadas,
     agregarTarjetaPersonalizada,
     eliminarTarjetaPersonalizada,
   } = useTarjetasPersonalizadas('tecnopuentes_tarjetas_comunicacion');
   const tarjetas = [...(diccionario[categoriaActiva] ?? []), ...(tarjetasPersonalizadas[categoriaActiva] ?? [])];
+
+  const manejarImagen = (e) => {
+    const archivo = e.target.files?.[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+    lector.onload = () => {
+      const resultado = typeof lector.result === 'string' ? lector.result : '';
+      setNuevaTarjeta((actual) => ({ ...actual, imagen: resultado, icono: resultado ? '' : actual.icono }));
+    };
+    lector.readAsDataURL(archivo);
+  };
 
   const agregarTarjeta = (t) => {
     hablar(t.voz ?? t.texto);
@@ -31,7 +43,7 @@ const Comunicador = ({ usuario, onVolver }) => {
   const guardarTarjeta = (e) => {
     e.preventDefault();
     agregarTarjetaPersonalizada(categoriaActiva, nuevaTarjeta);
-    setNuevaTarjeta({ icono: '', texto: '' });
+    setNuevaTarjeta({ icono: '', texto: '', imagen: '' });
     setCreando(false);
   };
 
@@ -52,7 +64,11 @@ const Comunicador = ({ usuario, onVolver }) => {
                   onClick={() => eliminarTarjeta(t.uniqueId)} aria-label={`Quitar ${t.texto}`}
                   className="flex flex-col items-center justify-center min-w-[90px] h-[90px] bg-white border-4 border-gray-200 rounded-2xl shadow-sm hover:border-red-300 shrink-0"
                 >
-                  <span className="text-3xl mb-1">{t.icono}</span>
+                  {t.imagen ? (
+                    <img src={t.imagen} alt={t.texto} className="h-8 w-8 object-contain mb-1" />
+                  ) : (
+                    <span className="text-3xl mb-1">{t.icono}</span>
+                  )}
                   <span className="font-extrabold text-xs text-gray-700 uppercase">{t.texto}</span>
                 </motion.button>
               ))}
@@ -82,7 +98,7 @@ const Comunicador = ({ usuario, onVolver }) => {
           <div className="mb-5 flex flex-col gap-3 rounded-3xl border-4 border-dashed border-blue-100 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-sm font-extrabold uppercase tracking-wider text-blue-500">Categoría activa</p>
-              <h2 className="text-xl font-extrabold text-gray-700">{categorias.find((cat) => cat.id === categoriaActiva)?.texto}</h2>
+              <h2 className="text-xl font-extrabold text-gray-700 uppercase">{categorias.find((cat) => cat.id === categoriaActiva)?.texto}</h2>
             </div>
             <motion.button
               whileTap={{ scale: 0.95 }}
@@ -100,13 +116,26 @@ const Comunicador = ({ usuario, onVolver }) => {
                 onSubmit={guardarTarjeta}
                 className="mb-6 grid gap-3 rounded-3xl border-4 border-blue-100 bg-blue-50/70 p-4 md:grid-cols-[8rem_1fr_auto]"
               >
-                <input
-                  value={nuevaTarjeta.icono}
-                  onChange={(e) => setNuevaTarjeta((actual) => ({ ...actual, icono: e.target.value }))}
-                  placeholder="⭐"
-                  aria-label="Pictograma de la tarjeta"
-                  className="min-h-16 rounded-2xl border-4 border-white bg-white p-3 text-center text-3xl font-extrabold text-gray-700 outline-none focus:border-blue-300"
-                />
+                <div className="flex items-center justify-center min-h-16 rounded-2xl border-4 border-white bg-white p-3">
+                  {nuevaTarjeta.imagen ? (
+                    <img src={nuevaTarjeta.imagen} alt="Pictograma" className="h-16 w-16 object-contain" />
+                  ) : (
+                    <span className="text-3xl font-extrabold text-gray-700">{nuevaTarjeta.icono || '⭐'}</span>
+                  )}
+                </div>
+                <div className="flex flex-col gap-3">
+                  <input
+                    value={nuevaTarjeta.icono}
+                    onChange={(e) => setNuevaTarjeta((actual) => ({ ...actual, icono: e.target.value, imagen: '' }))}
+                    placeholder="⭐"
+                    aria-label="Pictograma de la tarjeta"
+                    className="min-h-16 rounded-2xl border-4 border-white bg-white p-3 text-center text-3xl font-extrabold text-gray-700 outline-none focus:border-blue-300"
+                  />
+                  <label className="flex cursor-pointer items-center justify-center rounded-2xl border-4 border-dashed border-blue-200 bg-white px-4 py-3 text-sm font-extrabold uppercase text-blue-600">
+                    <span>📷 Elegir imagen</span>
+                    <input type="file" accept="image/*" onChange={manejarImagen} className="hidden" />
+                  </label>
+                </div>
                 <input
                   value={nuevaTarjeta.texto}
                   onChange={(e) => setNuevaTarjeta((actual) => ({ ...actual, texto: e.target.value }))}
@@ -142,7 +171,11 @@ const Comunicador = ({ usuario, onVolver }) => {
                 <motion.button whileHover={{ scale: 1.05, y: -5 }} whileTap={{ scale: 0.92 }}
                   onClick={() => agregarTarjeta(t)} aria-label={t.texto}
                   className={`flex aspect-square w-full flex-col items-center justify-center rounded-[2rem] border-4 border-b-8 bg-white p-6 shadow-sm hover:border-blue-300 ${t.personalizada ? 'border-blue-200' : 'border-gray-200'}`}>
-                  <span className="mb-4 text-6xl">{t.icono}</span>
+                  {t.imagen ? (
+                    <img src={t.imagen} alt={t.texto} className="mb-4 h-20 w-20 object-contain" />
+                  ) : (
+                    <span className="mb-4 text-6xl">{t.icono}</span>
+                  )}
                   <span className="text-center text-lg font-extrabold uppercase leading-tight text-gray-700">{t.texto}</span>
                 </motion.button>
               </div>

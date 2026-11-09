@@ -26,8 +26,9 @@ export const useTarjetasPersonalizadas = (clave) => {
   }, [clave]);
 
   const agregarTarjeta = useCallback((categoria, tarjeta) => {
-    const texto = tarjeta.texto.trim();
-    const icono = tarjeta.icono.trim() || '⭐';
+    const texto = (tarjeta.texto ?? '').trim();
+    const icono = (tarjeta.icono ?? '').trim();
+    const imagen = (tarjeta.imagen ?? '').trim();
 
     if (!texto) return;
 
@@ -37,7 +38,8 @@ export const useTarjetasPersonalizadas = (clave) => {
         ...(prev[categoria] ?? []),
         {
           id: generarId(),
-          icono,
+          icono: icono || '⭐',
+          imagen: imagen || '',
           texto,
           voz: texto,
           personalizada: true,

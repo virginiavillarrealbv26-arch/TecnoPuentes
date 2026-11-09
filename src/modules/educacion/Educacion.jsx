@@ -9,17 +9,30 @@ import { baseDatosEducacion } from './data/baseDatosEducacion';
 const Educacion = ({ usuario, onVolver }) => {
   const [categoriaActiva, setCategoriaActiva] = useState('vocales');
   const [creando, setCreando] = useState(false);
-  const [nuevaTarjeta, setNuevaTarjeta] = useState({ icono: '', texto: '' });
+  const [nuevaTarjeta, setNuevaTarjeta] = useState({ icono: '', texto: '', imagen: '' });
   const {
     tarjetasPersonalizadas,
     agregarTarjetaPersonalizada,
     eliminarTarjetaPersonalizada,
   } = useTarjetasPersonalizadas('tecnopuentes_tarjetas_educacion');
   const tarjetas = [...(baseDatosEducacion[categoriaActiva] || []), ...(tarjetasPersonalizadas[categoriaActiva] ?? [])];
+
+  const manejarImagen = (e) => {
+    const archivo = e.target.files?.[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+    lector.onload = () => {
+      const resultado = typeof lector.result === 'string' ? lector.result : '';
+      setNuevaTarjeta((actual) => ({ ...actual, imagen: resultado, icono: resultado ? '' : actual.icono }));
+    };
+    lector.readAsDataURL(archivo);
+  };
+
   const guardarTarjeta = (e) => {
     e.preventDefault();
     agregarTarjetaPersonalizada(categoriaActiva, nuevaTarjeta);
-    setNuevaTarjeta({ icono: '', texto: '' });
+    setNuevaTarjeta({ icono: '', texto: '', imagen: '' });
     setCreando(false);
   };
 
@@ -37,7 +50,7 @@ const Educacion = ({ usuario, onVolver }) => {
               className={`flex items-center gap-4 p-4 rounded-2xl border-4 transition-all shrink-0 md:w-full text-left ${categoriaActiva === cat.id ? cat.color + ' shadow-md scale-105' : 'border-transparent bg-gray-50 text-gray-500 hover:border-gray-200'}`}
             >
               <span className="text-3xl">{cat.icono}</span>
-              <span className="font-extrabold text-sm md:text-base whitespace-nowrap md:whitespace-normal">{cat.texto}</span>
+              <span className="font-extrabold text-sm md:text-base whitespace-nowrap md:whitespace-normal uppercase">{cat.texto}</span>
             </motion.button>
           ))}
         </div>
@@ -46,7 +59,7 @@ const Educacion = ({ usuario, onVolver }) => {
           <div className="mb-5 flex flex-col gap-3 rounded-3xl border-4 border-dashed border-purple-100 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-sm font-extrabold uppercase tracking-wider text-purple-500">Categoría activa</p>
-              <h2 className="text-xl font-extrabold text-gray-700">{categorias.find((cat) => cat.id === categoriaActiva)?.texto}</h2>
+              <h2 className="text-xl font-extrabold text-gray-700 uppercase">{categorias.find((cat) => cat.id === categoriaActiva)?.texto}</h2>
             </div>
             <motion.button
               whileTap={{ scale: 0.95 }}
@@ -64,13 +77,26 @@ const Educacion = ({ usuario, onVolver }) => {
                 onSubmit={guardarTarjeta}
                 className="mb-6 grid gap-3 rounded-3xl border-4 border-purple-100 bg-purple-50/70 p-4 md:grid-cols-[8rem_1fr_auto]"
               >
-                <input
-                  value={nuevaTarjeta.icono}
-                  onChange={(e) => setNuevaTarjeta((actual) => ({ ...actual, icono: e.target.value }))}
-                  placeholder="⭐"
-                  aria-label="Pictograma de la tarjeta"
-                  className="min-h-16 rounded-2xl border-4 border-white bg-white p-3 text-center text-3xl font-extrabold text-gray-700 outline-none focus:border-purple-300"
-                />
+                <div className="flex items-center justify-center min-h-16 rounded-2xl border-4 border-white bg-white p-3">
+                  {nuevaTarjeta.imagen ? (
+                    <img src={nuevaTarjeta.imagen} alt="Pictograma" className="h-16 w-16 object-contain" />
+                  ) : (
+                    <span className="text-3xl font-extrabold text-gray-700">{nuevaTarjeta.icono || '⭐'}</span>
+                  )}
+                </div>
+                <div className="flex flex-col gap-3">
+                  <input
+                    value={nuevaTarjeta.icono}
+                    onChange={(e) => setNuevaTarjeta((actual) => ({ ...actual, icono: e.target.value, imagen: '' }))}
+                    placeholder="⭐"
+                    aria-label="Pictograma de la tarjeta"
+                    className="min-h-16 rounded-2xl border-4 border-white bg-white p-3 text-center text-3xl font-extrabold text-gray-700 outline-none focus:border-purple-300"
+                  />
+                  <label className="flex cursor-pointer items-center justify-center rounded-2xl border-4 border-dashed border-purple-200 bg-white px-4 py-3 text-sm font-extrabold uppercase text-purple-600">
+                    <span>📷 Elegir imagen</span>
+                    <input type="file" accept="image/*" onChange={manejarImagen} className="hidden" />
+                  </label>
+                </div>
                 <input
                   value={nuevaTarjeta.texto}
                   onChange={(e) => setNuevaTarjeta((actual) => ({ ...actual, texto: e.target.value }))}
@@ -112,8 +138,12 @@ const Educacion = ({ usuario, onVolver }) => {
                     onClick={() => hablar(t.voz ?? t.texto)} aria-label={t.texto}
                     className={`flex aspect-square w-full flex-col items-center justify-center rounded-[2rem] border-4 border-b-8 bg-white p-4 shadow-sm hover:border-blue-400 md:p-6 ${t.personalizada ? 'border-purple-200' : 'border-gray-200'}`}
                   >
-                    <span className="mb-3 text-5xl md:text-7xl">{t.icono}</span>
-                    <span className="text-center text-base font-extrabold leading-tight text-gray-700 md:text-xl">{t.texto}</span>
+                    {t.imagen ? (
+                      <img src={t.imagen} alt={t.texto} className="mb-3 h-20 w-20 object-contain md:h-24 md:w-24" />
+                    ) : (
+                      <span className="mb-3 flex h-20 w-20 items-center justify-center overflow-hidden text-4xl leading-none md:h-24 md:w-24 md:text-5xl">{t.icono}</span>
+                    )}
+                    <span className="text-center text-base font-extrabold leading-tight text-gray-700 md:text-xl uppercase">{t.texto}</span>
                   </motion.button>
                 </div>
               )) : (
